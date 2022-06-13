@@ -17,7 +17,7 @@ public class VestidoCasualPage {
 		actions = new Actions(driver);
 		
 	}
-	
+		
 	//Declaração dos elementos
 	WebElement card;
 	WebElement closeCard;
@@ -38,8 +38,9 @@ public class VestidoCasualPage {
 		closeCard  = driver.findElement(By.xpath("//span[@title='Close window']"));
 		for(int i = 0; i < number; i++) {
 			butonAdd.click();
+			Thread.sleep(500);
 			closeCard.click();
-			Thread.sleep(200);
+			Thread.sleep(500);
 		}	
 	}
 
@@ -49,12 +50,25 @@ public class VestidoCasualPage {
 		carrinho.click();
 		Thread.sleep(3000);
 		actions.moveToElement(driver.findElement(By.id("total_price")));
-		System.out.println("$"+((number*26)+2)+".00" +"|"+number);
-		System.out.println(driver.findElement(By.id("total_price")).getText());
+		actions.perform();
 		Assert.assertEquals("Adicionei "+number+" vestidos no carrinho:", "$"+((number*26)+2)+".00", driver.findElement(By.id("total_price")).getText());
-		//actions.perform();
-		
 	}
-	
-	
+
+	public void clicarEmVestido() throws InterruptedException {
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("//img[@title='Printed Dress']")).click();
+	}
+
+	public void validarTelaMaisInformacoes() throws InterruptedException {
+		Thread.sleep(2000);
+		Assert.assertEquals("Validar texto do parágrafo na página mais informções",
+				"100% cotton double printed dress. Black and white striped top and orange high waisted skater skirt bottom.",
+				driver.findElement(By.xpath("//div[@id='short_description_content']/p")).getText());
+	}
+
+	public void clicarEmProcedimento() throws InterruptedException {
+		driver.findElement(By.xpath("//a[@title='Add to cart']")).click();
+		driver.findElement(By.xpath("//a[@title='Proceed to checkout']")).click();
+		Thread.sleep(3000);
+	}	
 }
